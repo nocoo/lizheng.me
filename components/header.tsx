@@ -46,7 +46,7 @@ const MoonIcon = () => (
   </svg>
 );
 
-const GlobeIcon = () => (
+const LanguagesIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
@@ -59,9 +59,12 @@ const GlobeIcon = () => (
     strokeLinejoin="round"
     aria-hidden="true"
   >
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-    <path d="M2 12h20" />
+    <path d="m5 8 6 6" />
+    <path d="m4 14 6-6 2-3" />
+    <path d="M2 5h12" />
+    <path d="M7 2h1" />
+    <path d="m22 22-5-10-5 10" />
+    <path d="M14 18h6" />
   </svg>
 );
 
@@ -87,7 +90,7 @@ export function Header({ locale }: HeaderProps) {
         className="p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-700 dark:text-neutral-300"
         aria-label={`Switch to ${targetLocale === "zh" ? "中文" : "English"}`}
       >
-        <GlobeIcon />
+        <LanguagesIcon />
       </button>
       <button
         type="button"
