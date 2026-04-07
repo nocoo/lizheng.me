@@ -35,50 +35,52 @@ export function Flashlight() {
 
       const baseColor = theme === "dark" ? "255, 255, 255" : "0, 0, 0";
       const baseAlpha = 0.03;
-      const maxAlpha = 0.15;
+      const maxAlpha = 0.2;
+      const mx = mouseRef.current.x;
+      const my = mouseRef.current.y;
 
-      // Draw vertical lines
+      // Draw vertical line segments
       for (let x = 0; x <= width; x += gridSize) {
-        const dist = Math.abs(x - mouseRef.current.x);
-        const yDist = Math.abs(mouseRef.current.y - height / 2);
+        for (let y = 0; y < height; y += gridSize) {
+          // Calculate distance from segment midpoint to mouse
+          const segMidY = y + gridSize / 2;
+          const dist = Math.sqrt((x - mx) ** 2 + (segMidY - my) ** 2);
 
-        // Check if any point on this vertical line is within radius of mouse
-        let minDist = dist;
-        if (mouseRef.current.y >= 0 && mouseRef.current.y <= height) {
-          minDist = dist;
+          let alpha = baseAlpha;
+          if (dist < radius) {
+            const factor = 1 - dist / radius;
+            alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x, Math.min(y + gridSize, height));
+          ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
         }
-
-        // Calculate alpha based on distance to mouse
-        let alpha = baseAlpha;
-        if (minDist < radius) {
-          const factor = 1 - minDist / radius;
-          alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
       }
 
-      // Draw horizontal lines
+      // Draw horizontal line segments
       for (let y = 0; y <= height; y += gridSize) {
-        const dist = Math.abs(y - mouseRef.current.y);
+        for (let x = 0; x < width; x += gridSize) {
+          // Calculate distance from segment midpoint to mouse
+          const segMidX = x + gridSize / 2;
+          const dist = Math.sqrt((segMidX - mx) ** 2 + (y - my) ** 2);
 
-        let alpha = baseAlpha;
-        if (dist < radius) {
-          const factor = 1 - dist / radius;
-          alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+          let alpha = baseAlpha;
+          if (dist < radius) {
+            const factor = 1 - dist / radius;
+            alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(Math.min(x + gridSize, width), y);
+          ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
         }
-
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
       }
 
       animationId = requestAnimationFrame(draw);
