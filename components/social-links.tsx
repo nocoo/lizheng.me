@@ -37,7 +37,7 @@ const links = [
     label: "Blog",
   },
   {
-    href: "https://linkedin.com/in/zhengli",
+    href: "https://www.linkedin.com/in/nocoo/",
     Icon: LinkedInIcon,
     label: "LinkedIn",
   },
