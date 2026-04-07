@@ -71,7 +71,7 @@ export function BlogArrow() {
           y="106"
           fill="currentColor"
           fontSize="20"
-          fontFamily="Caveat, 'Comic Sans MS', cursive"
+          fontFamily="'Comic Sans MS', 'Chalkboard SE', 'Bradley Hand', cursive"
           fontWeight="700"
           className="select-none"
           transform="rotate(-10, 6, 106)"

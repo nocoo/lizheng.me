@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-sans: -apple-system, "system-ui", "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
 @variant dark (&:where(.dark, .dark *));
