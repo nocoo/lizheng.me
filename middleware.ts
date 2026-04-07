@@ -22,6 +22,32 @@ const blogPatterns = [
   /^\/login$/, // /login
 ];
 
+// Content Security Policy
+const cspDirectives = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: https:",
+  "connect-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+];
+
+function addSecurityHeaders(response: NextResponse): NextResponse {
+  response.headers.set("Content-Security-Policy", cspDirectives.join("; "));
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()",
+  );
+  return response;
+}
+
 function getLocale(request: NextRequest): string {
   const acceptLanguage = request.headers.get("accept-language");
   if (acceptLanguage) {
@@ -45,7 +71,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/images") ||
     (pathname.includes(".") && !pathname.endsWith(".xml"))
   ) {
-    return;
+    return addSecurityHeaders(NextResponse.next());
   }
 
   // Check if this is a blog path - 301 redirect to lizheng.blog
@@ -59,14 +85,14 @@ export function middleware(request: NextRequest) {
     (path) => pathname.startsWith(`${path}/`) || pathname === path,
   );
 
-  if (isReservedPath) return;
+  if (isReservedPath) return addSecurityHeaders(NextResponse.next());
 
   // Check if pathname starts with a locale
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
-  if (pathnameHasLocale) return;
+  if (pathnameHasLocale) return addSecurityHeaders(NextResponse.next());
 
   // Root path - redirect to locale
   if (pathname === "/") {
