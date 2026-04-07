@@ -20,9 +20,6 @@
   },
   "homepage": "https://github.com/nocoo/lizheng.me#readme",
   "dependencies": {
-    "@tsparticles/engine": "^3.9.1",
-    "@tsparticles/react": "^3.0.0",
-    "@tsparticles/slim": "^3.9.1",
     "lucide-react": "^1.7.0",
     "next-intl": "^4.9.0",
     "react": "^19.2.4",

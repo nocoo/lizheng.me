@@ -1,128 +1,169 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useTheme } from "./theme-provider";
 
 interface ParticleNameProps {
   name: string;
 }
 
+interface Particle {
+  x: number;
+  y: number;
+  originX: number;
+  originY: number;
+  size: number;
+  color: string;
+  vx: number;
+  vy: number;
+}
+
 export function ParticleName({ name }: ParticleNameProps) {
-  const [ParticlesComponent, setParticlesComponent] = useState<any>(null);
-  const [init, setInit] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
-    // Dynamic import of particles to avoid SSR issues
-    Promise.all([
-      import("@tsparticles/react"),
-      import("@tsparticles/slim"),
-    ]).then(async ([{ default: Particles, initParticlesEngine }, { loadSlim }]) => {
-      await initParticlesEngine(async (engine: any) => {
-        await loadSlim(engine);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+    let particles: Particle[] = [];
+    let mouse = { x: -9999, y: -9999 };
+
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      createParticles();
+    };
+
+    const createParticles = () => {
+      particles = [];
+      const rect = canvas.getBoundingClientRect();
+
+      // Create offscreen canvas to render text
+      const offscreen = document.createElement("canvas");
+      offscreen.width = rect.width;
+      offscreen.height = rect.height;
+      const offCtx = offscreen.getContext("2d");
+      if (!offCtx) return;
+
+      // Calculate responsive font size
+      const fontSize = Math.min(rect.width / 5, 120);
+
+      offCtx.fillStyle = theme === "dark" ? "#ffffff" : "#000000";
+      offCtx.font = `bold ${fontSize}px Inter, system-ui, sans-serif`;
+      offCtx.textAlign = "center";
+      offCtx.textBaseline = "middle";
+      offCtx.fillText(name, rect.width / 2, rect.height / 2);
+
+      // Sample pixels
+      const imageData = offCtx.getImageData(0, 0, rect.width, rect.height);
+      const data = imageData.data;
+      const gap = 3; // Density of particles
+
+      for (let y = 0; y < rect.height; y += gap) {
+        for (let x = 0; x < rect.width; x += gap) {
+          const index = (y * rect.width + x) * 4;
+          const alpha = data[index + 3];
+
+          if (alpha > 128) {
+            particles.push({
+              x: Math.random() * rect.width,
+              y: Math.random() * rect.height,
+              originX: x,
+              originY: y,
+              size: Math.random() * 1.5 + 1,
+              color: theme === "dark"
+                ? `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`
+                : `rgba(0, 0, 0, ${0.6 + Math.random() * 0.4})`,
+              vx: 0,
+              vy: 0,
+            });
+          }
+        }
+      }
+    };
+
+    const animate = () => {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      particles.forEach((p) => {
+        // Mouse repulsion
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = 80;
+
+        if (dist < maxDist) {
+          const force = (maxDist - dist) / maxDist;
+          const angle = Math.atan2(dy, dx);
+          p.vx -= Math.cos(angle) * force * 2;
+          p.vy -= Math.sin(angle) * force * 2;
+        }
+
+        // Return to origin
+        p.vx += (p.originX - p.x) * 0.05;
+        p.vy += (p.originY - p.y) * 0.05;
+
+        // Friction
+        p.vx *= 0.9;
+        p.vy *= 0.9;
+
+        // Update position
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
       });
-      setParticlesComponent(() => Particles);
-      setInit(true);
-    });
-  }, []);
 
-  const particlesLoaded = useCallback(async (container: any) => {
-    // Particles loaded
-  }, []);
+      animationId = requestAnimationFrame(animate);
+    };
 
-  const options = useMemo(
-    () => ({
-      fullScreen: false,
-      background: {
-        color: {
-          value: "transparent",
-        },
-      },
-      fpsLimit: 60,
-      interactivity: {
-        events: {
-          onHover: {
-            enable: true,
-            mode: ["grab", "repulse"] as const,
-          },
-        },
-        modes: {
-          grab: {
-            distance: 200,
-            links: {
-              opacity: 0.8,
-            },
-          },
-          repulse: {
-            distance: 100,
-            duration: 0.4,
-          },
-        },
-      },
-      particles: {
-        color: {
-          value: theme === "dark" ? "#a3a3a3" : "#a3a3a3",
-        },
-        links: {
-          color: theme === "dark" ? "#a3a3a3" : "#d4d4d4",
-          distance: 150,
-          enable: true,
-          opacity: 0.4,
-          width: 1,
-        },
-        move: {
-          direction: "none" as const,
-          enable: true,
-          outModes: {
-            default: "bounce" as const,
-          },
-          random: true,
-          speed: 1.2,
-          straight: false,
-        },
-        number: {
-          density: {
-            enable: true,
-            width: 400,
-            height: 400,
-          },
-          value: 80,
-        },
-        opacity: {
-          value: { min: 0.4, max: 0.8 },
-          animation: {
-            enable: true,
-            speed: 1,
-            sync: false,
-          },
-        },
-        shape: {
-          type: "circle",
-        },
-        size: {
-          value: { min: 2, max: 5 },
-        },
-      },
-      detectRetina: true,
-    }),
-    [theme]
-  );
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    };
+
+    const handleMouseLeave = () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    };
+
+    resize();
+    animate();
+
+    window.addEventListener("resize", resize);
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", resize);
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [name, theme]);
 
   return (
-    <div className="relative w-full flex items-center justify-center h-32 sm:h-40">
-      {init && ParticlesComponent && (
-        <ParticlesComponent
-          id="tsparticles"
-          className="absolute inset-0 -inset-x-32 -inset-y-16 pointer-events-auto"
-          particlesLoaded={particlesLoaded}
-          options={options}
-        />
-      )}
-      <h1 className="relative z-10 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-center pointer-events-none">
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 dark:from-white dark:via-neutral-300 dark:to-white">
-          {name}
-        </span>
-      </h1>
+    <div className="relative w-full flex items-center justify-center">
+      <canvas
+        ref={canvasRef}
+        className="w-full h-32 sm:h-40 md:h-48"
+      />
     </div>
   );
 }
