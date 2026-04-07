@@ -1,14 +1,24 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "./theme-provider";
 
 export function Flashlight() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -200, y: -200 });
   const { theme } = useTheme();
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
+    // Detect touch device
+    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    setIsTouchDevice(hasTouch);
+  }, []);
+
+  useEffect(() => {
+    // Skip canvas rendering on touch devices
+    if (isTouchDevice) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -125,7 +135,12 @@ export function Flashlight() {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [theme]);
+  }, [theme, isTouchDevice]);
+
+  // Don't render canvas on touch devices
+  if (isTouchDevice) {
+    return null;
+  }
 
   return (
     <canvas

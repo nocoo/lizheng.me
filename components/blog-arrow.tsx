@@ -4,12 +4,27 @@ import { useEffect, useState } from "react";
 
 export function BlogArrow() {
   const [visible, setVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
+    // Detect touch device
+    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    setIsTouchDevice(hasTouch);
+  }, []);
+
+  useEffect(() => {
+    // Skip animation on touch devices
+    if (isTouchDevice) return;
+
     // Delay animation start for dramatic effect
     const timer = setTimeout(() => setVisible(true), 640);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isTouchDevice]);
+
+  // Don't render on touch devices
+  if (isTouchDevice) {
+    return null;
+  }
 
   return (
     <div
