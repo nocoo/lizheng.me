@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-sans: "Inter", system-ui, sans-serif;
+}
+
+@variant dark (&:where(.dark, .dark *));

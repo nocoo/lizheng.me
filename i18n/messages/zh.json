@@ -1,0 +1,22 @@
+{
+  "title": "李征 - 微软首席软件工程经理",
+  "description": "15年Web和移动软件开发经验，正在为AI时代重塑自己。",
+  "tagline": "15年Web和移动软件开发经验，正在为AI时代重塑自己。",
+  "role": "微软首席软件工程经理",
+  "location": "北京",
+  "bio": "微软工程领导者，十余年全栈团队管理经验，支撑大规模业务运营。领导15人跨职能团队，聚焦AI转型，以身作则，将战略视野与深度技术执行力相结合。",
+  "links": {
+    "blog": "博客",
+    "linkedin": "LinkedIn",
+    "twitter": "X",
+    "github": "GitHub"
+  },
+  "theme": {
+    "light": "浅色",
+    "dark": "深色"
+  },
+  "language": {
+    "en": "English",
+    "zh": "中文"
+  }
+}

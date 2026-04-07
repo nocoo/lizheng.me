@@ -1,0 +1,22 @@
+{
+  "title": "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+  "description": "15 years building web & mobile software. Now rebuilding myself for the AI era.",
+  "tagline": "15 years building web & mobile software. Now rebuilding myself for the AI era.",
+  "role": "Principal Software Engineering Manager @ Microsoft",
+  "location": "Beijing",
+  "bio": "Engineering leader at Microsoft with over a decade of experience managing full-stack teams operating at massive scale. Leading a 15-person cross-functional unit focused on AI transformation, serving as a hands-on role model who bridges strategy with code.",
+  "links": {
+    "blog": "Blog",
+    "linkedin": "LinkedIn",
+    "twitter": "X",
+    "github": "GitHub"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "en": "English",
+    "zh": "中文"
+  }
+}
