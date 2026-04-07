@@ -22,12 +22,12 @@ export function HomeClient({ locale, translations }: HomeClientProps) {
         <div className="flex flex-col items-center justify-center min-h-screen px-4 py-16 sm:py-24">
           {/* Avatar */}
           <div className="relative mb-8 sm:mb-10">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden ring-4 ring-neutral-200 dark:ring-neutral-800 shadow-xl">
+            <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden shadow-xl">
               <img
                 src="/images/profile.jpg"
                 alt="Zheng Li"
-                width={160}
-                height={160}
+                width={192}
+                height={192}
                 className="object-cover w-full h-full"
               />
             </div>
