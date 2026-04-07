@@ -30,6 +30,8 @@ export function HomeClient({ locale, translations }: HomeClientProps) {
                 alt="Zheng Li"
                 width={192}
                 height={192}
+                fetchPriority="high"
+                decoding="async"
                 className="object-cover w-full h-full"
               />
             </div>
