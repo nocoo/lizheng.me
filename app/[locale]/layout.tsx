@@ -1,11 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Inter } from "next/font/google";
+import { Caveat, Inter, JetBrains_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 const caveat = Caveat({ subsets: ["latin"], display: "swap", variable: "--font-caveat" });
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 type Props = {
   children: React.ReactNode;
@@ -243,7 +248,7 @@ export default async function RootLayout({ children, params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.className} ${caveat.variable} antialiased`}>
+      <body className={`${inter.className} ${caveat.variable} ${jetbrainsMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
