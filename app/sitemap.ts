@@ -1,28 +1,39 @@
-export default function sitemap() {
+import { MetadataRoute } from "next";
+
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://lizheng.me";
+  const lastModified = new Date();
 
   return [
     {
+      url: baseUrl,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
       url: `${baseUrl}/en`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
+      lastModified,
+      changeFrequency: "monthly",
       priority: 1,
       alternates: {
         languages: {
           en: `${baseUrl}/en`,
           zh: `${baseUrl}/zh`,
+          "x-default": `${baseUrl}/en`,
         },
       },
     },
     {
       url: `${baseUrl}/zh`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
+      lastModified,
+      changeFrequency: "monthly",
       priority: 1,
       alternates: {
         languages: {
           en: `${baseUrl}/en`,
           zh: `${baseUrl}/zh`,
+          "x-default": `${baseUrl}/en`,
         },
       },
     },
