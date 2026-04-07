@@ -13,20 +13,20 @@ export function BlogArrow() {
 
   return (
     <div
-      className={`absolute -bottom-28 -left-24 sm:-bottom-28 sm:-left-28 pointer-events-none transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
+      className={`absolute -bottom-32 -left-28 sm:-bottom-32 sm:-left-32 pointer-events-none transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
       aria-hidden="true"
     >
       <svg
-        width="140"
-        height="110"
-        viewBox="0 0 140 110"
+        width="150"
+        height="130"
+        viewBox="0 0 150 130"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="text-neutral-900 dark:text-white"
+        className="text-neutral-500 dark:text-neutral-400"
       >
         {/* Hand-drawn arrow with loop: start from bottom-left, loop, then point to top-right */}
         <path
-          d="M 12 90 Q 30 82, 42 70 Q 54 58, 48 46 Q 42 34, 30 40 Q 18 46, 24 58 Q 30 70, 50 62 Q 70 54, 90 36 Q 105 22, 115 14"
+          d="M 20 100 Q 38 92, 50 80 Q 62 68, 56 56 Q 50 44, 38 50 Q 26 56, 32 68 Q 38 80, 58 72 Q 78 64, 100 46 Q 115 32, 125 24"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -39,7 +39,7 @@ export function BlogArrow() {
         />
         {/* Arrow head */}
         <path
-          d="M 105 10 Q 110 12, 115 14 M 115 14 Q 113 20, 111 26"
+          d="M 115 20 Q 120 22, 125 24 M 125 24 Q 123 30, 121 36"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -50,16 +50,16 @@ export function BlogArrow() {
             transition: "stroke-dashoffset 0.4s ease-out 1.4s",
           }}
         />
-        {/* Hand-written "blog" text - tilted, positioned at bottom left */}
+        {/* Hand-written "blog" text - tilted, positioned at bottom left with more spacing */}
         <text
           x="6"
-          y="108"
+          y="126"
           fill="currentColor"
           fontSize="20"
           fontFamily="var(--font-caveat), cursive"
           fontWeight="700"
           className="select-none"
-          transform="rotate(-10, 6, 108)"
+          transform="rotate(-10, 6, 126)"
           style={{
             opacity: visible ? 1 : 0,
             transition: "opacity 0.5s ease-out 1.6s",
