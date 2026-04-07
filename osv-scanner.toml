@@ -1,0 +1,8 @@
+[[IgnoredVulns]]
+# GHSA-5f7q-jpqc-wp7h: Next.js Server-Side Request Forgery vulnerability
+# This is a false positive for vinext projects:
+# - vinext shims the Next.js API surface but doesn't use Next.js runtime
+# - The vulnerability affects server-side data fetching which we don't use
+# - lizheng.me is a static personal homepage with no server-side data fetching
+id = "GHSA-5f7q-jpqc-wp7h"
+reason = "False positive: vinext shims Next.js API without using vulnerable runtime code"

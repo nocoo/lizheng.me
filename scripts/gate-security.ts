@@ -10,7 +10,7 @@ import { $ } from "bun";
 async function runOsvScanner(): Promise<boolean> {
   console.log("🔍 Running osv-scanner...");
   try {
-    await $`osv-scanner --lockfile=bun.lock`.quiet();
+    await $`osv-scanner --lockfile=bun.lock --config=osv-scanner.toml`.quiet();
     console.log("✅ osv-scanner: No vulnerabilities found");
     return true;
   } catch (_error) {
