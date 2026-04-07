@@ -237,8 +237,8 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/images/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
         <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
