@@ -55,8 +55,8 @@ export function ParticleName({ name }: ParticleNameProps) {
       const offCtx = offscreen.getContext("2d");
       if (!offCtx) return;
 
-      // Calculate responsive font size (reduced by 20%)
-      const fontSize = Math.min(rect.width / 5, 120) * 0.8;
+      // Calculate responsive font size (reduced to 90%)
+      const fontSize = Math.min(rect.width / 5, 120) * 0.9;
 
       offCtx.fillStyle = theme === "dark" ? "#ffffff" : "#000000";
       offCtx.font = `bold ${fontSize}px var(--font-mono), "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Monaco, Consolas, monospace`;
