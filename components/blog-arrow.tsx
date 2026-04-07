@@ -7,7 +7,7 @@ export function BlogArrow() {
 
   useEffect(() => {
     // Delay animation start for dramatic effect
-    const timer = setTimeout(() => setVisible(true), 800);
+    const timer = setTimeout(() => setVisible(true), 640);
     return () => clearTimeout(timer);
   }, []);
 
@@ -26,7 +26,7 @@ export function BlogArrow() {
       >
         {/* Hand-drawn arrow with loop: start from bottom-left, loop, then point to top-right */}
         <path
-          d="M 20 100 Q 38 92, 50 80 Q 62 68, 56 56 Q 50 44, 38 50 Q 26 56, 32 68 Q 38 80, 58 72 Q 78 64, 95 50 Q 108 40, 115 34"
+          d="M 20 100 Q 38 92, 50 80 Q 62 68, 56 56 Q 50 44, 38 50 Q 26 56, 32 68 Q 38 80, 58 72 Q 78 64, 100 52 Q 112 44, 120 38"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -34,12 +34,12 @@ export function BlogArrow() {
           style={{
             strokeDasharray: 250,
             strokeDashoffset: visible ? 0 : 250,
-            transition: "stroke-dashoffset 1.2s ease-out 0.3s",
+            transition: "stroke-dashoffset 0.96s ease-out 0.24s",
           }}
         />
         {/* Arrow head */}
         <path
-          d="M 105 30 Q 110 32, 115 34 M 115 34 Q 113 40, 111 46"
+          d="M 110 34 Q 115 36, 120 38 M 120 38 Q 118 44, 116 50"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -47,7 +47,7 @@ export function BlogArrow() {
           style={{
             strokeDasharray: 30,
             strokeDashoffset: visible ? 0 : 30,
-            transition: "stroke-dashoffset 0.4s ease-out 1.4s",
+            transition: "stroke-dashoffset 0.32s ease-out 1.12s",
           }}
         />
         {/* Hand-written "blog" text - tilted, positioned at bottom left with more spacing */}
@@ -62,7 +62,7 @@ export function BlogArrow() {
           transform="rotate(-10, 6, 126)"
           style={{
             opacity: visible ? 1 : 0,
-            transition: "opacity 0.5s ease-out 1.6s",
+            transition: "opacity 0.4s ease-out 1.28s",
           }}
         >
           blog
