@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# G2: Security scanning (osv-scanner + gitleaks)
+bun run gate:g2

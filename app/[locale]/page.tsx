@@ -1,5 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { HomeClient } from "@/components/home-client";
 
 type Props = {

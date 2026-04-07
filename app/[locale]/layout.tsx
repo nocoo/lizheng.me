@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { Inter } from "next/font/google";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -31,7 +31,13 @@ const jsonLdEn = {
   ],
   image: "https://lizheng.me/images/profile.jpg",
   description: "15 years building web & mobile software. Now rebuilding myself for the AI era.",
-  knowsAbout: ["Software Engineering", "Mobile Development", "Web Development", "AI", "Engineering Leadership"],
+  knowsAbout: [
+    "Software Engineering",
+    "Mobile Development",
+    "Web Development",
+    "AI",
+    "Engineering Leadership",
+  ],
   alumniOf: {
     "@type": "CollegeOrUniversity",
     name: "Tongji University",
@@ -80,13 +86,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isZh = locale === "zh";
 
   return {
-    title: isZh ? "李征 - 微软首席软件工程经理" : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+    title: isZh
+      ? "李征 - 微软首席软件工程经理"
+      : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
     description: isZh
       ? "李征，微软首席软件工程经理，15年Web和移动软件开发经验，专注AI转型和工程领导力。同济大学计算机硕士。"
       : "Zheng Li, Principal Software Engineering Manager at Microsoft. 15 years building web & mobile software, leading AI transformation. M.Eng from Tongji University.",
     keywords: isZh
-      ? ["李征", "软件工程师", "微软", "AI", "移动开发", "Web开发", "工程管理", "Copilot", "同济大学", "北京"]
-      : ["Zheng Li", "Software Engineer", "Microsoft", "AI", "Mobile Development", "Web Development", "Engineering Manager", "Copilot", "Tongji University", "Beijing"],
+      ? [
+          "李征",
+          "软件工程师",
+          "微软",
+          "AI",
+          "移动开发",
+          "Web开发",
+          "工程管理",
+          "Copilot",
+          "同济大学",
+          "北京",
+        ]
+      : [
+          "Zheng Li",
+          "Software Engineer",
+          "Microsoft",
+          "AI",
+          "Mobile Development",
+          "Web Development",
+          "Engineering Manager",
+          "Copilot",
+          "Tongji University",
+          "Beijing",
+        ],
     authors: [{ name: "Zheng Li", url: "https://lizheng.me" }],
     creator: "Zheng Li",
     publisher: "Zheng Li",
@@ -99,8 +129,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `https://lizheng.me/${locale}`,
       languages: {
-        "en": "https://lizheng.me/en",
-        "zh": "https://lizheng.me/zh",
+        en: "https://lizheng.me/en",
+        zh: "https://lizheng.me/zh",
         "x-default": "https://lizheng.me/en",
       },
     },
@@ -109,7 +139,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: locale === "zh" ? "zh_CN" : "en_US",
       alternateLocale: locale === "zh" ? "en_US" : "zh_CN",
       url: `https://lizheng.me/${locale}`,
-      title: isZh ? "李征 - 微软首席软件工程经理" : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+      title: isZh
+        ? "李征 - 微软首席软件工程经理"
+        : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
       description: isZh
         ? "15年Web和移动软件开发经验，正在为AI时代重塑自己。"
         : "15 years building web & mobile software. Now rebuilding myself for the AI era.",
@@ -122,7 +154,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: "https://lizheng.me/images/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: isZh ? "李征 - 微软首席软件工程经理" : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+          alt: isZh
+            ? "李征 - 微软首席软件工程经理"
+            : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
           type: "image/jpeg",
         },
         {
@@ -138,7 +172,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       site: "@zhengli",
       creator: "@zhengli",
-      title: isZh ? "李征 - 微软首席软件工程经理" : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+      title: isZh
+        ? "李征 - 微软首席软件工程经理"
+        : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
       description: isZh
         ? "15年Web和移动软件开发经验，正在为AI时代重塑自己。"
         : "15 years building web & mobile software. Now rebuilding myself for the AI era.",
@@ -214,9 +250,7 @@ export default async function RootLayout({ children, params }: Props) {
         />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 const locales = ["en", "zh"] as const;
 const defaultLocale = "en";
@@ -25,8 +25,9 @@ const blogPatterns = [
 function getLocale(request: NextRequest): string {
   const acceptLanguage = request.headers.get("accept-language");
   if (acceptLanguage) {
-    const preferred = acceptLanguage.split(",")[0].split("-")[0].toLowerCase();
-    if ((locales as readonly string[]).includes(preferred)) {
+    const parts = acceptLanguage.split(",")[0]?.split("-");
+    const preferred = parts?.[0]?.toLowerCase();
+    if (preferred && (locales as readonly string[]).includes(preferred)) {
       return preferred;
     }
     if (preferred === "zh") return "zh";
@@ -55,14 +56,14 @@ export function middleware(request: NextRequest) {
 
   // Check if pathname starts with a locale or reserved path
   const isReservedPath = reservedPaths.some(
-    (path) => pathname.startsWith(`${path}/`) || pathname === path
+    (path) => pathname.startsWith(`${path}/`) || pathname === path,
   );
 
   if (isReservedPath) return;
 
   // Check if pathname starts with a locale
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
   if (pathnameHasLocale) return;

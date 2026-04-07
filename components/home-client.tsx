@@ -1,9 +1,9 @@
 "use client";
 
-import { ThemeProvider } from "./theme-provider";
 import { Header } from "./header";
 import { ParticleName } from "./particle-name";
 import { SocialLinks } from "./social-links";
+import { ThemeProvider } from "./theme-provider";
 
 interface HomeClientProps {
   locale: string;

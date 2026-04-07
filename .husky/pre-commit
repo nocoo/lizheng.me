@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# G1: TypeScript + Biome lint (parallel)
+bun run typecheck && bun run lint:check
+
+# L1: Unit tests with coverage threshold
+bun run test:coverage

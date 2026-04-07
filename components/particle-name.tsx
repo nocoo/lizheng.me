@@ -31,7 +31,7 @@ export function ParticleName({ name }: ParticleNameProps) {
 
     let animationId: number;
     let particles: Particle[] = [];
-    let mouse = { x: -9999, y: -9999 };
+    const mouse = { x: -9999, y: -9999 };
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -72,7 +72,7 @@ export function ParticleName({ name }: ParticleNameProps) {
       for (let y = 0; y < rect.height; y += gap) {
         for (let x = 0; x < rect.width; x += gap) {
           const index = (y * rect.width + x) * 4;
-          const alpha = data[index + 3];
+          const alpha = data[index + 3] ?? 0;
 
           if (alpha > 128) {
             particles.push({
@@ -81,9 +81,10 @@ export function ParticleName({ name }: ParticleNameProps) {
               originX: x,
               originY: y,
               size: Math.random() * 1.5 + 1,
-              color: theme === "dark"
-                ? `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`
-                : `rgba(0, 0, 0, ${0.6 + Math.random() * 0.4})`,
+              color:
+                theme === "dark"
+                  ? `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`
+                  : `rgba(0, 0, 0, ${0.6 + Math.random() * 0.4})`,
               vx: 0,
               vy: 0,
             });
@@ -160,10 +161,7 @@ export function ParticleName({ name }: ParticleNameProps) {
 
   return (
     <div className="relative w-full flex items-center justify-center">
-      <canvas
-        ref={canvasRef}
-        className="w-full h-32 sm:h-40 md:h-48"
-      />
+      <canvas ref={canvasRef} className="w-full h-32 sm:h-40 md:h-48" />
     </div>
   );
 }
