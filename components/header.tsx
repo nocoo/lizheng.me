@@ -87,7 +87,7 @@ export function Header({ locale }: HeaderProps) {
       <button
         type="button"
         onClick={switchLocale}
-        className="p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-700 dark:text-neutral-300"
+        className="p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-600 dark:text-neutral-400"
         aria-label={`Switch to ${targetLocale === "zh" ? "中文" : "English"}`}
       >
         <LanguagesIcon />
@@ -95,7 +95,7 @@ export function Header({ locale }: HeaderProps) {
       <button
         type="button"
         onClick={toggleTheme}
-        className="p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-700 dark:text-neutral-300"
+        className="p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-neutral-600 dark:text-neutral-400"
         aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
       >
         {theme === "light" ? <MoonIcon /> : <SunIcon />}
