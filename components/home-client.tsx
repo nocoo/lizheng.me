@@ -1,5 +1,6 @@
 "use client";
 
+import { Flashlight } from "./flashlight";
 import { Header } from "./header";
 import { ParticleName } from "./particle-name";
 import { SocialLinks } from "./social-links";
@@ -17,6 +18,7 @@ export function HomeClient({ locale, translations }: HomeClientProps) {
   return (
     <ThemeProvider>
       <main className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300 bg-grid">
+        <Flashlight />
         <Header locale={locale} />
 
         <div className="flex flex-col items-center justify-center min-h-screen px-4 py-12 sm:py-24">
