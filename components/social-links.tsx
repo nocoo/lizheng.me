@@ -69,14 +69,14 @@ const links = [
 
 export function SocialLinks({ className = "" }: SocialLinksProps) {
   return (
-    <div className={`flex items-center justify-center gap-6 ${className}`}>
+    <div className={`flex items-center justify-center gap-4 sm:gap-6 ${className}`}>
       {links.map(({ href, Icon, label }, index) => (
         <div key={href} className={index === 0 ? "relative" : ""}>
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all duration-200 hover:scale-110 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white block"
+            className="group p-2.5 sm:p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all duration-200 hover:scale-110 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white block"
             aria-label={label}
           >
             <Icon />

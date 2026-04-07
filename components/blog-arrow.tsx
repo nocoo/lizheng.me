@@ -13,16 +13,16 @@ export function BlogArrow() {
 
   return (
     <div
-      className={`absolute -bottom-24 -left-20 sm:-bottom-24 sm:-left-24 pointer-events-none transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
+      className={`absolute -bottom-20 -left-16 sm:-bottom-24 sm:-left-24 pointer-events-none transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
       aria-hidden="true"
     >
       <svg
-        width="130"
-        height="110"
+        width="100"
+        height="85"
         viewBox="0 0 130 110"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="text-neutral-500 dark:text-neutral-400"
+        className="text-neutral-500 dark:text-neutral-400 sm:w-[130px] sm:h-[110px]"
       >
         {/* Hand-drawn arrow with loop: start from bottom-left, loop, then point to top-right */}
         <path
