@@ -1,9 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
-import type { Container, Engine, ISourceOptions } from "@tsparticles/engine";
 import { useTheme } from "./theme-provider";
 
 interface ParticleNameProps {
@@ -11,22 +8,29 @@ interface ParticleNameProps {
 }
 
 export function ParticleName({ name }: ParticleNameProps) {
+  const [ParticlesComponent, setParticlesComponent] = useState<any>(null);
   const [init, setInit] = useState(false);
   const { theme } = useTheme();
 
   useEffect(() => {
-    initParticlesEngine(async (engine: Engine) => {
-      await loadSlim(engine);
-    }).then(() => {
+    // Dynamic import of particles to avoid SSR issues
+    Promise.all([
+      import("@tsparticles/react"),
+      import("@tsparticles/slim"),
+    ]).then(async ([{ default: Particles, initParticlesEngine }, { loadSlim }]) => {
+      await initParticlesEngine(async (engine: any) => {
+        await loadSlim(engine);
+      });
+      setParticlesComponent(() => Particles);
       setInit(true);
     });
   }, []);
 
-  const particlesLoaded = useCallback(async (container: Container | undefined) => {
+  const particlesLoaded = useCallback(async (container: any) => {
     // Particles loaded
   }, []);
 
-  const options: ISourceOptions = useMemo(
+  const options = useMemo(
     () => ({
       fullScreen: false,
       background: {
@@ -63,10 +67,10 @@ export function ParticleName({ name }: ParticleNameProps) {
           width: 1,
         },
         move: {
-          direction: "none",
+          direction: "none" as const,
           enable: true,
           outModes: {
-            default: "bounce",
+            default: "bounce" as const,
           },
           random: true,
           speed: 0.8,
@@ -96,8 +100,8 @@ export function ParticleName({ name }: ParticleNameProps) {
   return (
     <div className="relative w-full flex items-center justify-center">
       <div className="relative">
-        {init && (
-          <Particles
+        {init && ParticlesComponent && (
+          <ParticlesComponent
             id="tsparticles"
             className="absolute inset-0 -inset-x-16 -inset-y-8 pointer-events-auto"
             particlesLoaded={particlesLoaded}

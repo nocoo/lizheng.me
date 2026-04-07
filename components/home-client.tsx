@@ -4,7 +4,6 @@ import { ThemeProvider } from "./theme-provider";
 import { Header } from "./header";
 import { ParticleName } from "./particle-name";
 import { SocialLinks } from "./social-links";
-import Image from "next/image";
 
 interface HomeClientProps {
   locale: string;
@@ -24,13 +23,12 @@ export function HomeClient({ locale, translations }: HomeClientProps) {
           {/* Avatar */}
           <div className="relative mb-8 sm:mb-10">
             <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden ring-4 ring-neutral-200 dark:ring-neutral-800 shadow-xl">
-              <Image
+              <img
                 src="/images/profile.jpg"
                 alt="Zheng Li"
                 width={160}
                 height={160}
                 className="object-cover w-full h-full"
-                priority
               />
             </div>
           </div>

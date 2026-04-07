@@ -1,11 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
-import dynamic from "next/dynamic";
-
-const HomeClient = dynamic(
-  () => import("@/components/home-client").then((mod) => mod.HomeClient),
-  { ssr: false }
-);
+import { HomeClient } from "@/components/home-client";
 
 type Props = {
   params: Promise<{ locale: string }>;
