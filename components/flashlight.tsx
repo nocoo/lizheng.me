@@ -18,6 +18,8 @@ export function Flashlight() {
     let animationId: number;
     const gridSize = 16;
     const radius = 60;
+    // Only draw lines within this range of mouse (with padding for smooth edges)
+    const drawRange = radius + gridSize;
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -39,47 +41,63 @@ export function Flashlight() {
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
 
-      // Draw vertical line segments
+      // Draw base grid (very faint, full screen)
+      ctx.strokeStyle = `rgba(${baseColor}, ${baseAlpha})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
       for (let x = 0; x <= width; x += gridSize) {
-        for (let y = 0; y < height; y += gridSize) {
-          // Calculate distance from segment midpoint to mouse
-          const segMidY = y + gridSize / 2;
-          const dist = Math.sqrt((x - mx) ** 2 + (segMidY - my) ** 2);
-
-          let alpha = baseAlpha;
-          if (dist < radius) {
-            const factor = 1 - dist / radius;
-            alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
-          }
-
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(x, Math.min(y + gridSize, height));
-          ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
       }
-
-      // Draw horizontal line segments
       for (let y = 0; y <= height; y += gridSize) {
-        for (let x = 0; x < width; x += gridSize) {
-          // Calculate distance from segment midpoint to mouse
-          const segMidX = x + gridSize / 2;
-          const dist = Math.sqrt((segMidX - mx) ** 2 + (y - my) ** 2);
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
 
-          let alpha = baseAlpha;
-          if (dist < radius) {
-            const factor = 1 - dist / radius;
-            alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+      // Only draw enhanced segments near mouse cursor
+      if (mx > -100 && my > -100) {
+        const startX = Math.max(0, Math.floor((mx - drawRange) / gridSize) * gridSize);
+        const endX = Math.min(width, Math.ceil((mx + drawRange) / gridSize) * gridSize);
+        const startY = Math.max(0, Math.floor((my - drawRange) / gridSize) * gridSize);
+        const endY = Math.min(height, Math.ceil((my + drawRange) / gridSize) * gridSize);
+
+        // Draw vertical line segments near mouse
+        for (let x = startX; x <= endX; x += gridSize) {
+          for (let y = startY; y < endY; y += gridSize) {
+            const segMidY = y + gridSize / 2;
+            const dist = Math.sqrt((x - mx) ** 2 + (segMidY - my) ** 2);
+
+            if (dist < radius) {
+              const factor = 1 - dist / radius;
+              const alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              ctx.lineTo(x, Math.min(y + gridSize, height));
+              ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
+              ctx.stroke();
+            }
           }
+        }
 
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(Math.min(x + gridSize, width), y);
-          ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
+        // Draw horizontal line segments near mouse
+        for (let y = startY; y <= endY; y += gridSize) {
+          for (let x = startX; x < endX; x += gridSize) {
+            const segMidX = x + gridSize / 2;
+            const dist = Math.sqrt((segMidX - mx) ** 2 + (y - my) ** 2);
+
+            if (dist < radius) {
+              const factor = 1 - dist / radius;
+              const alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              ctx.lineTo(Math.min(x + gridSize, width), y);
+              ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
+              ctx.stroke();
+            }
+          }
         }
       }
 
