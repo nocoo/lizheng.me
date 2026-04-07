@@ -43,15 +43,19 @@ export function ParticleName({ name }: ParticleNameProps) {
         events: {
           onHover: {
             enable: true,
-            mode: "grab",
+            mode: ["grab", "repulse"] as const,
           },
         },
         modes: {
           grab: {
-            distance: 140,
+            distance: 200,
             links: {
-              opacity: 0.5,
+              opacity: 0.8,
             },
+          },
+          repulse: {
+            distance: 100,
+            duration: 0.4,
           },
         },
       },
@@ -61,10 +65,10 @@ export function ParticleName({ name }: ParticleNameProps) {
         },
         links: {
           color: theme === "dark" ? "#ffffff" : "#000000",
-          distance: 120,
+          distance: 150,
           enable: true,
-          opacity: 0.3,
-          width: 1,
+          opacity: 0.5,
+          width: 1.5,
         },
         move: {
           direction: "none" as const,
@@ -73,23 +77,30 @@ export function ParticleName({ name }: ParticleNameProps) {
             default: "bounce" as const,
           },
           random: true,
-          speed: 0.8,
+          speed: 1.2,
           straight: false,
         },
         number: {
           density: {
             enable: true,
+            width: 400,
+            height: 400,
           },
-          value: 60,
+          value: 80,
         },
         opacity: {
-          value: 0.6,
+          value: { min: 0.4, max: 0.8 },
+          animation: {
+            enable: true,
+            speed: 1,
+            sync: false,
+          },
         },
         shape: {
           type: "circle",
         },
         size: {
-          value: { min: 1, max: 3 },
+          value: { min: 2, max: 5 },
         },
       },
       detectRetina: true,
@@ -98,22 +109,20 @@ export function ParticleName({ name }: ParticleNameProps) {
   );
 
   return (
-    <div className="relative w-full flex items-center justify-center">
-      <div className="relative">
-        {init && ParticlesComponent && (
-          <ParticlesComponent
-            id="tsparticles"
-            className="absolute inset-0 -inset-x-16 -inset-y-8 pointer-events-auto"
-            particlesLoaded={particlesLoaded}
-            options={options}
-          />
-        )}
-        <h1 className="relative z-10 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-center pointer-events-none">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 dark:from-white dark:via-neutral-300 dark:to-white">
-            {name}
-          </span>
-        </h1>
-      </div>
+    <div className="relative w-full flex items-center justify-center h-32 sm:h-40">
+      {init && ParticlesComponent && (
+        <ParticlesComponent
+          id="tsparticles"
+          className="absolute inset-0 -inset-x-32 -inset-y-16 pointer-events-auto"
+          particlesLoaded={particlesLoaded}
+          options={options}
+        />
+      )}
+      <h1 className="relative z-10 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-center pointer-events-none">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-900 dark:from-white dark:via-neutral-300 dark:to-white">
+          {name}
+        </span>
+      </h1>
     </div>
   );
 }
