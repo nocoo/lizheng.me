@@ -25,6 +25,8 @@ export default defineConfig({
         // UI shell components (6DQ: UI thin shells exempted from coverage)
         "components/home-client.tsx",
         "components/particle-name.tsx",
+        // Canvas-based components (jsdom doesn't support canvas context)
+        "components/flashlight.tsx",
       ],
       thresholds: {
         lines: 90,

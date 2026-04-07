@@ -17,7 +17,7 @@ interface HomeClientProps {
 export function HomeClient({ locale, translations }: HomeClientProps) {
   return (
     <ThemeProvider>
-      <main className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300 bg-grid">
+      <main className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300">
         <Flashlight />
         <Header locale={locale} />
 
