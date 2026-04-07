@@ -26,7 +26,7 @@ export function BlogArrow() {
       >
         {/* Hand-drawn arrow with loop: start from bottom-left, loop, then point to top-right */}
         <path
-          d="M 20 100 Q 38 92, 50 80 Q 62 68, 56 56 Q 50 44, 38 50 Q 26 56, 32 68 Q 38 80, 58 72 Q 78 64, 100 46 Q 115 32, 125 24"
+          d="M 20 100 Q 38 92, 50 80 Q 62 68, 56 56 Q 50 44, 38 50 Q 26 56, 32 68 Q 38 80, 58 72 Q 78 64, 95 50 Q 108 40, 115 34"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -39,7 +39,7 @@ export function BlogArrow() {
         />
         {/* Arrow head */}
         <path
-          d="M 115 20 Q 120 22, 125 24 M 125 24 Q 123 30, 121 36"
+          d="M 105 30 Q 110 32, 115 34 M 115 34 Q 113 40, 111 46"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
