@@ -16,7 +16,7 @@ interface HomeClientProps {
 export function HomeClient({ locale, translations }: HomeClientProps) {
   return (
     <ThemeProvider>
-      <main className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300">
+      <main className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300 bg-grid">
         <Header locale={locale} />
 
         <div className="flex flex-col items-center justify-center min-h-screen px-4 py-16 sm:py-24">
