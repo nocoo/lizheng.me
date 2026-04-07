@@ -61,14 +61,14 @@ export function ParticleName({ name }: ParticleNameProps) {
       },
       particles: {
         color: {
-          value: theme === "dark" ? "#ffffff" : "#000000",
+          value: theme === "dark" ? "#a3a3a3" : "#a3a3a3",
         },
         links: {
-          color: theme === "dark" ? "#ffffff" : "#000000",
+          color: theme === "dark" ? "#a3a3a3" : "#d4d4d4",
           distance: 150,
           enable: true,
-          opacity: 0.5,
-          width: 1.5,
+          opacity: 0.4,
+          width: 1,
         },
         move: {
           direction: "none" as const,
