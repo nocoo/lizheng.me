@@ -55,12 +55,12 @@ export function ParticleName({ name }: ParticleNameProps) {
       const offCtx = offscreen.getContext("2d");
       if (!offCtx) return;
 
-      // Calculate responsive font size (reduced to 90%, min 48px for mobile)
+      // Calculate responsive font size (min 64px for mobile readability)
       const baseFontSize = Math.min(rect.width / 5, 120);
-      const fontSize = Math.max(baseFontSize * 0.9, 48);
+      const fontSize = Math.max(baseFontSize * 0.9, 64);
 
       offCtx.fillStyle = theme === "dark" ? "#ffffff" : "#000000";
-      offCtx.font = `bold ${fontSize}px var(--font-mono), "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Monaco, Consolas, monospace`;
+      offCtx.font = `bold ${fontSize}px "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Monaco, Consolas, monospace`;
       offCtx.textAlign = "center";
       offCtx.textBaseline = "middle";
       offCtx.fillText(name, rect.width / 2, rect.height / 2);
