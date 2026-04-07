@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Caveat, Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
+const caveat = Caveat({ subsets: ["latin"], display: "swap", variable: "--font-caveat" });
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ const jsonLdEn = {
   "@type": "Person",
   name: "Zheng Li",
   alternateName: "李征",
-  jobTitle: "Principal Software Engineering Manager",
+  jobTitle: "Developer",
   worksFor: {
     "@type": "Organization",
     name: "Microsoft",
@@ -30,13 +31,14 @@ const jsonLdEn = {
     "https://lizheng.blog",
   ],
   image: "https://lizheng.me/images/profile.jpg",
-  description: "15 years building web & mobile software. Now rebuilding myself for the AI era.",
+  description:
+    "20 years coding, 15 at Microsoft. Web, mobile, and data. Now exploring AI-native transformation for teams at scale.",
   knowsAbout: [
     "Software Engineering",
-    "Mobile Development",
     "Web Development",
-    "AI",
-    "Engineering Leadership",
+    "Mobile Development",
+    "Data Engineering",
+    "AI Transformation",
   ],
   alumniOf: {
     "@type": "CollegeOrUniversity",
@@ -54,7 +56,7 @@ const jsonLdZh = {
   "@type": "Person",
   name: "李征",
   alternateName: "Zheng Li",
-  jobTitle: "微软首席软件工程经理",
+  jobTitle: "程序员",
   worksFor: {
     "@type": "Organization",
     name: "微软",
@@ -68,8 +70,8 @@ const jsonLdZh = {
     "https://lizheng.blog",
   ],
   image: "https://lizheng.me/images/profile.jpg",
-  description: "15年Web和移动软件开发经验，正在为AI时代重塑自己。",
-  knowsAbout: ["软件工程", "移动开发", "Web开发", "人工智能", "工程管理"],
+  description: "写了20年代码，15年微软。Web、移动、数据。正在探索大型团队的AI原生转型。",
+  knowsAbout: ["软件工程", "Web开发", "移动开发", "数据工程", "AI转型"],
   alumniOf: {
     "@type": "CollegeOrUniversity",
     name: "同济大学",
@@ -86,34 +88,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isZh = locale === "zh";
 
   return {
-    title: isZh
-      ? "李征 - 微软首席软件工程经理"
-      : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+    title: isZh ? "李征 - 程序员 @ Microsoft" : "Zheng Li - Developer @ Microsoft",
     description: isZh
-      ? "李征，微软首席软件工程经理，15年Web和移动软件开发经验，专注AI转型和工程领导力。同济大学计算机硕士。"
-      : "Zheng Li, Principal Software Engineering Manager at Microsoft. 15 years building web & mobile software, leading AI transformation. M.Eng from Tongji University.",
+      ? "李征，程序员 @ Microsoft，20年编程经验，15年微软。专注Web、移动和数据开发，正在探索大型团队的AI原生转型。"
+      : "Zheng Li, Developer at Microsoft. 20 years coding, 15 at Microsoft. Web, mobile, and data. Now exploring AI-native transformation for teams at scale.",
     keywords: isZh
       ? [
           "李征",
-          "软件工程师",
+          "程序员",
           "微软",
           "AI",
-          "移动开发",
           "Web开发",
-          "工程管理",
-          "Copilot",
+          "移动开发",
+          "数据工程",
+          "AI转型",
           "同济大学",
           "北京",
         ]
       : [
           "Zheng Li",
-          "Software Engineer",
+          "Developer",
           "Microsoft",
           "AI",
-          "Mobile Development",
           "Web Development",
-          "Engineering Manager",
-          "Copilot",
+          "Mobile Development",
+          "Data Engineering",
+          "AI Transformation",
           "Tongji University",
           "Beijing",
         ],
@@ -139,12 +139,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: locale === "zh" ? "zh_CN" : "en_US",
       alternateLocale: locale === "zh" ? "en_US" : "zh_CN",
       url: `https://lizheng.me/${locale}`,
-      title: isZh
-        ? "李征 - 微软首席软件工程经理"
-        : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+      title: isZh ? "李征 - 程序员 @ Microsoft" : "Zheng Li - Developer @ Microsoft",
       description: isZh
-        ? "15年Web和移动软件开发经验，正在为AI时代重塑自己。"
-        : "15 years building web & mobile software. Now rebuilding myself for the AI era.",
+        ? "写了20年代码，15年微软。Web、移动、数据。正在探索大型团队的AI原生转型。"
+        : "20 years coding, 15 at Microsoft. Web, mobile, and data. Now exploring AI-native transformation for teams at scale.",
       siteName: "Zheng Li",
       firstName: "Zheng",
       lastName: "Li",
@@ -154,9 +152,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: "https://lizheng.me/images/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: isZh
-            ? "李征 - 微软首席软件工程经理"
-            : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+          alt: isZh ? "李征 - 微软开发者" : "Zheng Li - Developer @ Microsoft",
           type: "image/jpeg",
         },
         {
@@ -172,12 +168,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       site: "@zhengli",
       creator: "@zhengli",
-      title: isZh
-        ? "李征 - 微软首席软件工程经理"
-        : "Zheng Li - Principal Software Engineering Manager @ Microsoft",
+      title: isZh ? "李征 - 程序员 @ Microsoft" : "Zheng Li - Developer @ Microsoft",
       description: isZh
-        ? "15年Web和移动软件开发经验，正在为AI时代重塑自己。"
-        : "15 years building web & mobile software. Now rebuilding myself for the AI era.",
+        ? "写了20年代码，15年微软。Web、移动、数据。正在探索大型团队的AI原生转型。"
+        : "20 years coding, 15 at Microsoft. Web, mobile, and data. Now exploring AI-native transformation for teams at scale.",
       images: {
         url: "https://lizheng.me/images/og-image.jpg",
         alt: isZh ? "李征" : "Zheng Li",
@@ -249,7 +243,7 @@ export default async function RootLayout({ children, params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} ${caveat.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
