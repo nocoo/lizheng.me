@@ -25,15 +25,18 @@ export function HomeClient({ locale, translations }: HomeClientProps) {
           {/* Avatar */}
           <div className="relative mb-6 sm:mb-10">
             <div className="w-28 h-28 sm:w-48 sm:h-48 rounded-full overflow-hidden shadow-xl">
-              <img
-                src="/images/profile.jpg"
-                alt="Zheng Li"
-                width={192}
-                height={192}
-                fetchPriority="high"
-                decoding="async"
-                className="object-cover w-full h-full"
-              />
+              <picture>
+                <source srcSet="/images/profile.webp" type="image/webp" />
+                <img
+                  src="/images/profile.jpg"
+                  alt="Zheng Li"
+                  width={192}
+                  height={192}
+                  fetchPriority="high"
+                  decoding="async"
+                  className="object-cover w-full h-full"
+                />
+              </picture>
             </div>
           </div>
 
