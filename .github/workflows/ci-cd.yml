@@ -32,7 +32,6 @@ jobs:
 
       - name: Lint
         run: bun run lint:check
-        continue-on-error: true
 
       - name: Unit tests
         run: bun run test
