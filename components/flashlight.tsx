@@ -40,18 +40,13 @@ export function Flashlight() {
       canvas.style.height = `${window.innerHeight}px`;
     };
 
-    const draw = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      ctx.clearRect(0, 0, width, height);
-
-      const baseColor = theme === "dark" ? "255, 255, 255" : "0, 0, 0";
-      const baseAlpha = 0.03;
-      const maxAlpha = 0.2;
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
-
-      // Draw base grid (very faint, full screen)
+    const drawBaseGrid = (
+      ctx: CanvasRenderingContext2D,
+      width: number,
+      height: number,
+      baseColor: string,
+      baseAlpha: number,
+    ) => {
       ctx.strokeStyle = `rgba(${baseColor}, ${baseAlpha})`;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -64,6 +59,85 @@ export function Flashlight() {
         ctx.lineTo(width, y);
       }
       ctx.stroke();
+    };
+
+    const drawEnhancedVerticalSegments = (
+      ctx: CanvasRenderingContext2D,
+      startX: number,
+      endX: number,
+      startY: number,
+      endY: number,
+      mx: number,
+      my: number,
+      height: number,
+      baseColor: string,
+      baseAlpha: number,
+      maxAlpha: number,
+    ) => {
+      for (let x = startX; x <= endX; x += gridSize) {
+        for (let y = startY; y < endY; y += gridSize) {
+          const segMidY = y + gridSize / 2;
+          const dist = Math.sqrt((x - mx) ** 2 + (segMidY - my) ** 2);
+
+          if (dist < radius) {
+            const factor = 1 - dist / radius;
+            const alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, Math.min(y + gridSize, height));
+            ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
+            ctx.stroke();
+          }
+        }
+      }
+    };
+
+    const drawEnhancedHorizontalSegments = (
+      ctx: CanvasRenderingContext2D,
+      startX: number,
+      endX: number,
+      startY: number,
+      endY: number,
+      mx: number,
+      my: number,
+      width: number,
+      baseColor: string,
+      baseAlpha: number,
+      maxAlpha: number,
+    ) => {
+      for (let y = startY; y <= endY; y += gridSize) {
+        for (let x = startX; x < endX; x += gridSize) {
+          const segMidX = x + gridSize / 2;
+          const dist = Math.sqrt((segMidX - mx) ** 2 + (y - my) ** 2);
+
+          if (dist < radius) {
+            const factor = 1 - dist / radius;
+            const alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(Math.min(x + gridSize, width), y);
+            ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
+            ctx.stroke();
+          }
+        }
+      }
+    };
+
+    const draw = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      ctx.clearRect(0, 0, width, height);
+
+      const baseColor = theme === "dark" ? "255, 255, 255" : "0, 0, 0";
+      const baseAlpha = 0.03;
+      const maxAlpha = 0.2;
+      const mx = mouseRef.current.x;
+      const my = mouseRef.current.y;
+
+      // Draw base grid (very faint, full screen)
+      drawBaseGrid(ctx, width, height, baseColor, baseAlpha);
 
       // Only draw enhanced segments near mouse cursor
       if (mx > -100 && my > -100) {
@@ -73,42 +147,34 @@ export function Flashlight() {
         const endY = Math.min(height, Math.ceil((my + drawRange) / gridSize) * gridSize);
 
         // Draw vertical line segments near mouse
-        for (let x = startX; x <= endX; x += gridSize) {
-          for (let y = startY; y < endY; y += gridSize) {
-            const segMidY = y + gridSize / 2;
-            const dist = Math.sqrt((x - mx) ** 2 + (segMidY - my) ** 2);
-
-            if (dist < radius) {
-              const factor = 1 - dist / radius;
-              const alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
-
-              ctx.beginPath();
-              ctx.moveTo(x, y);
-              ctx.lineTo(x, Math.min(y + gridSize, height));
-              ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
-              ctx.stroke();
-            }
-          }
-        }
+        drawEnhancedVerticalSegments(
+          ctx,
+          startX,
+          endX,
+          startY,
+          endY,
+          mx,
+          my,
+          height,
+          baseColor,
+          baseAlpha,
+          maxAlpha,
+        );
 
         // Draw horizontal line segments near mouse
-        for (let y = startY; y <= endY; y += gridSize) {
-          for (let x = startX; x < endX; x += gridSize) {
-            const segMidX = x + gridSize / 2;
-            const dist = Math.sqrt((segMidX - mx) ** 2 + (y - my) ** 2);
-
-            if (dist < radius) {
-              const factor = 1 - dist / radius;
-              const alpha = baseAlpha + (maxAlpha - baseAlpha) * factor * factor;
-
-              ctx.beginPath();
-              ctx.moveTo(x, y);
-              ctx.lineTo(Math.min(x + gridSize, width), y);
-              ctx.strokeStyle = `rgba(${baseColor}, ${alpha})`;
-              ctx.stroke();
-            }
-          }
-        }
+        drawEnhancedHorizontalSegments(
+          ctx,
+          startX,
+          endX,
+          startY,
+          endY,
+          mx,
+          my,
+          width,
+          baseColor,
+          baseAlpha,
+          maxAlpha,
+        );
       }
 
       animationId = requestAnimationFrame(draw);
@@ -147,6 +213,7 @@ export function Flashlight() {
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-0"
       aria-hidden="true"
+      tabIndex={-1}
     />
   );
 }

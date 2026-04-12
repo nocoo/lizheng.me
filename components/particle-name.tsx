@@ -44,6 +44,68 @@ export function ParticleName({ name }: ParticleNameProps) {
       createParticles();
     };
 
+    const measureTextMetrics = (
+      offCtx: CanvasRenderingContext2D,
+      rect: DOMRect,
+      textName: string,
+      textTheme: string,
+    ) => {
+      // Calculate responsive font size (min 64px for mobile readability)
+      const baseFontSize = Math.min(rect.width / 5, 120);
+      const fontSize = Math.max(baseFontSize * 0.9, 64);
+
+      offCtx.fillStyle = textTheme === "dark" ? "#ffffff" : "#000000";
+      offCtx.font = `bold ${fontSize}px "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Monaco, Consolas, monospace`;
+      offCtx.textAlign = "center";
+      offCtx.textBaseline = "middle";
+      offCtx.fillText(textName, rect.width / 2, rect.height / 2);
+    };
+
+    const createParticleFromPixel = (
+      x: number,
+      y: number,
+      rectWidth: number,
+      rectHeight: number,
+      particleTheme: string,
+    ): Particle => {
+      return {
+        x: Math.random() * rectWidth,
+        y: Math.random() * rectHeight,
+        originX: x,
+        originY: y,
+        size: Math.random() * 1.5 + 1,
+        color:
+          particleTheme === "dark"
+            ? `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`
+            : `rgba(0, 0, 0, ${0.6 + Math.random() * 0.4})`,
+        vx: 0,
+        vy: 0,
+      };
+    };
+
+    const samplePixelsAndCreateParticles = (
+      imageData: ImageData,
+      rect: DOMRect,
+      gap: number,
+      particleTheme: string,
+    ): Particle[] => {
+      const result: Particle[] = [];
+      const data = imageData.data;
+
+      for (let y = 0; y < rect.height; y += gap) {
+        for (let x = 0; x < rect.width; x += gap) {
+          const index = (y * rect.width + x) * 4;
+          const alpha = data[index + 3] ?? 0;
+
+          if (alpha > 128) {
+            result.push(createParticleFromPixel(x, y, rect.width, rect.height, particleTheme));
+          }
+        }
+      }
+
+      return result;
+    };
+
     const createParticles = () => {
       particles = [];
       const rect = canvas.getBoundingClientRect();
@@ -55,43 +117,13 @@ export function ParticleName({ name }: ParticleNameProps) {
       const offCtx = offscreen.getContext("2d");
       if (!offCtx) return;
 
-      // Calculate responsive font size (min 64px for mobile readability)
-      const baseFontSize = Math.min(rect.width / 5, 120);
-      const fontSize = Math.max(baseFontSize * 0.9, 64);
-
-      offCtx.fillStyle = theme === "dark" ? "#ffffff" : "#000000";
-      offCtx.font = `bold ${fontSize}px "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Monaco, Consolas, monospace`;
-      offCtx.textAlign = "center";
-      offCtx.textBaseline = "middle";
-      offCtx.fillText(name, rect.width / 2, rect.height / 2);
+      measureTextMetrics(offCtx, rect, name, theme);
 
       // Sample pixels
       const imageData = offCtx.getImageData(0, 0, rect.width, rect.height);
-      const data = imageData.data;
       const gap = 3; // Density of particles
 
-      for (let y = 0; y < rect.height; y += gap) {
-        for (let x = 0; x < rect.width; x += gap) {
-          const index = (y * rect.width + x) * 4;
-          const alpha = data[index + 3] ?? 0;
-
-          if (alpha > 128) {
-            particles.push({
-              x: Math.random() * rect.width,
-              y: Math.random() * rect.height,
-              originX: x,
-              originY: y,
-              size: Math.random() * 1.5 + 1,
-              color:
-                theme === "dark"
-                  ? `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`
-                  : `rgba(0, 0, 0, ${0.6 + Math.random() * 0.4})`,
-              vx: 0,
-              vy: 0,
-            });
-          }
-        }
-      }
+      particles = samplePixelsAndCreateParticles(imageData, rect, gap, theme);
     };
 
     const animate = () => {

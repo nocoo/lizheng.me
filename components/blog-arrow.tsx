@@ -38,6 +38,8 @@ export function BlogArrow() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="text-neutral-500 dark:text-neutral-400 sm:w-[130px] sm:h-[110px]"
+        role="img"
+        aria-label="decorative arrow"
       >
         {/* Hand-drawn arrow with loop: start from bottom-left, loop, then point to top-right */}
         <path
