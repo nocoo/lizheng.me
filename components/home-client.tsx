@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Header } from "./header";
 import { SocialLinks } from "./social-links";
 import { TerminalPrompt } from "./terminal-prompt";
@@ -34,10 +34,13 @@ export function HomeClient({ locale: _locale, translations }: HomeClientProps) {
     }
   }, []);
 
-  const advance = (next: Step) => () => {
-    if (instant) return;
-    setTimeout(() => setStep(next), PAUSE_BETWEEN_PROMPTS);
-  };
+  const advance = useCallback(
+    (next: Step) => () => {
+      if (instant) return;
+      setTimeout(() => setStep(next), PAUSE_BETWEEN_PROMPTS);
+    },
+    [instant],
+  );
 
   return (
     <ThemeProvider>

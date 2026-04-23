@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface TypingEffectProps {
   text: string;
@@ -23,12 +23,14 @@ export function TypingEffect({
 }: TypingEffectProps) {
   const [displayed, setDisplayed] = useState(instant ? text : "");
   const [done, setDone] = useState(instant);
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
 
   useEffect(() => {
     if (instant) {
       setDisplayed(text);
       setDone(true);
-      onDone?.();
+      onDoneRef.current?.();
       return;
     }
 
@@ -48,7 +50,7 @@ export function TypingEffect({
         if (index >= text.length) {
           if (intervalId) clearInterval(intervalId);
           setDone(true);
-          onDone?.();
+          onDoneRef.current?.();
         }
       }, speed);
     }, startDelay);
@@ -58,7 +60,7 @@ export function TypingEffect({
       clearTimeout(startTimeout);
       if (intervalId) clearInterval(intervalId);
     };
-  }, [text, speed, startDelay, onDone, instant]);
+  }, [text, speed, startDelay, instant]);
 
   return (
     <span className={className}>
