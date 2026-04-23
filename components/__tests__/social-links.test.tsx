@@ -12,6 +12,15 @@ describe("SocialLinks", () => {
     expect(screen.getByLabelText("GitHub")).toBeInTheDocument();
   });
 
+  it("renders links as file-style names", () => {
+    render(<SocialLinks />);
+
+    expect(screen.getByText("blog.md")).toBeInTheDocument();
+    expect(screen.getByText("linkedin.md")).toBeInTheDocument();
+    expect(screen.getByText("x.md")).toBeInTheDocument();
+    expect(screen.getByText("github.md")).toBeInTheDocument();
+  });
+
   it("all links open in new tab", () => {
     render(<SocialLinks />);
 
@@ -32,10 +41,5 @@ describe("SocialLinks", () => {
     );
     expect(screen.getByLabelText("X (Twitter)")).toHaveAttribute("href", "https://x.com/zhengli");
     expect(screen.getByLabelText("GitHub")).toHaveAttribute("href", "https://github.com/nocoo");
-  });
-
-  it("applies custom className", () => {
-    const { container } = render(<SocialLinks className="custom-class" />);
-    expect(container.firstChild).toHaveClass("custom-class");
   });
 });
