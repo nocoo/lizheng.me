@@ -1,27 +1,24 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Homepage", () => {
-  test("displays name and title", async ({ page }) => {
+  test("displays name", async ({ page }) => {
     await page.goto("/en");
+    await expect(page.getByText("Zheng Li")).toBeVisible();
+  });
 
-    // Check for name particle text (canvas element)
-    const canvas = page.locator("canvas");
-    await expect(canvas).toBeVisible();
-
-    // Check for title
+  test("displays role", async ({ page }) => {
+    await page.goto("/en");
     await expect(page.getByText(/Principal Software Engineering Manager/i)).toBeVisible();
   });
 
   test("displays tagline", async ({ page }) => {
     await page.goto("/en");
-
     await expect(page.getByText(/15 years building web/i)).toBeVisible();
   });
 
   test("renders social links", async ({ page }) => {
     await page.goto("/en");
 
-    // Check all social links exist
     await expect(page.getByLabel("Blog")).toBeVisible();
     await expect(page.getByLabel("LinkedIn")).toBeVisible();
     await expect(page.getByLabel("X (Twitter)")).toBeVisible();
