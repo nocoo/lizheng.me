@@ -1,10 +1,12 @@
 "use client";
 
-import { Flashlight } from "./flashlight";
+import { useEffect, useState } from "react";
 import { Header } from "./header";
-import { ParticleName } from "./particle-name";
 import { SocialLinks } from "./social-links";
+import { TerminalPrompt } from "./terminal-prompt";
+import { TerminalWindow } from "./terminal-window";
 import { ThemeProvider } from "./theme-provider";
+import { TypingEffect } from "./typing-effect";
 
 interface HomeClientProps {
   locale: string;
@@ -14,49 +16,87 @@ interface HomeClientProps {
   };
 }
 
-export function HomeClient({ locale, translations }: HomeClientProps) {
+type Step = 0 | 1 | 2 | 3 | 4;
+
+const PAUSE_BETWEEN_PROMPTS = 400;
+
+export function HomeClient({ locale: _locale, translations }: HomeClientProps) {
+  const [step, setStep] = useState<Step>(0);
+  const [instant, setInstant] = useState(false);
+
+  useEffect(() => {
+    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (hasTouch) {
+      setInstant(true);
+      setStep(4);
+    } else {
+      setStep(1);
+    }
+  }, []);
+
+  const advance = (next: Step) => () => {
+    if (instant) return;
+    setTimeout(() => setStep(next), PAUSE_BETWEEN_PROMPTS);
+  };
+
   return (
     <ThemeProvider>
-      <main className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300">
-        <Flashlight />
-        <Header locale={locale} />
+      <main className="min-h-screen bg-[#FAFAFA] dark:bg-[#0A0A0A] text-neutral-900 dark:text-neutral-100 transition-colors duration-300 bg-grid">
+        <Header locale={_locale} />
 
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 py-12 sm:py-24">
-          {/* Avatar */}
-          <div className="relative mb-6 sm:mb-10">
-            <div className="w-28 h-28 sm:w-48 sm:h-48 rounded-full overflow-hidden shadow-xl">
-              <picture>
-                <source srcSet="/images/profile.webp" type="image/webp" />
-                <img
-                  src="/images/profile.jpg"
-                  alt="Zheng Li"
-                  width={192}
-                  height={192}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="object-cover w-full h-full"
-                />
-              </picture>
-            </div>
-          </div>
+        <div className="flex items-start sm:items-center justify-center min-h-screen px-4 py-16 sm:py-24">
+          <TerminalWindow>
+            <TerminalPrompt
+              active={step >= 1}
+              instant={instant}
+              command="whoami"
+              onOutputReady={advance(2)}
+              output={
+                <p className="text-[24px] sm:text-[28px] font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+                  Zheng Li
+                </p>
+              }
+            />
 
-          {/* Name with Particles */}
-          <div className="mb-4 sm:mb-8 w-full max-w-3xl">
-            <ParticleName name="Zheng Li" />
-          </div>
+            <TerminalPrompt
+              active={step >= 2}
+              instant={instant}
+              command="cat role.txt"
+              onOutputReady={advance(3)}
+              output={
+                <p className="text-neutral-700 dark:text-neutral-300 text-[15px] sm:text-[16px]">
+                  {translations.role}
+                </p>
+              }
+            />
 
-          {/* Role & Location */}
-          <p className="text-base sm:text-xl text-neutral-600 dark:text-neutral-400 text-center mb-3 sm:mb-4">
-            {translations.role}
-          </p>
+            <TerminalPrompt
+              active={step >= 3}
+              instant={instant}
+              command="cat bio.txt"
+              output={
+                <p className="text-neutral-700 dark:text-neutral-300 text-[15px] sm:text-[16px] leading-[1.6]">
+                  {instant ? (
+                    translations.tagline
+                  ) : (
+                    <TypingEffect
+                      text={translations.tagline}
+                      speed={30}
+                      showCursor
+                      onDone={advance(4)}
+                    />
+                  )}
+                </p>
+              }
+            />
 
-          {/* Tagline */}
-          <p className="text-sm sm:text-lg text-neutral-500 dark:text-neutral-500 text-center max-w-xl mb-8 sm:mb-12 px-2 sm:px-4 leading-relaxed">
-            {translations.tagline}
-          </p>
-
-          {/* Social Links */}
-          <SocialLinks />
+            <TerminalPrompt
+              active={step >= 4}
+              instant={instant}
+              command="ls links/"
+              output={<SocialLinks stagger={!instant} />}
+            />
+          </TerminalWindow>
         </div>
       </main>
     </ThemeProvider>
