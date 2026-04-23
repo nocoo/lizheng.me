@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { TypingEffect } from "./typing-effect";
 
 interface TerminalPromptProps {
@@ -24,7 +24,13 @@ export function TerminalPrompt({
   onOutputReady,
   outputDelay = 0,
 }: TerminalPromptProps) {
-  const [commandDone, setCommandDone] = useState(instant || !active);
+  const [commandDone, setCommandDone] = useState(instant);
+
+  useEffect(() => {
+    if (active && !instant) {
+      setCommandDone(false);
+    }
+  }, [active, instant]);
 
   if (!active) {
     return null;

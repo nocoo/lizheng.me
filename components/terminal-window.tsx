@@ -34,7 +34,7 @@ export function TerminalWindow({ title = "zheng@lizheng.me ~ %", children }: Ter
               />
             </picture>
           </span>
-          <span className="text-[13px] text-neutral-500 dark:text-neutral-400 select-none">
+          <span className="text-[14px] text-neutral-500 dark:text-neutral-400 select-none">
             {title}
           </span>
         </div>
